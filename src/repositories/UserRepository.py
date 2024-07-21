@@ -1,4 +1,4 @@
-from models.User import UserInDB
+from models.User import UserInDB, User
 
 fake_users_db = {
     "johndoe": {
@@ -16,3 +16,11 @@ def get_user(username: str):
         user_dict = fake_users_db[username]
         return UserInDB(**user_dict)
     
+
+def create_user(username: str, password: str) -> User:
+    fake_users_db[username] = {
+        "username": username,
+        "hashed_password": password,
+        "disabled": False,
+    }
+    return User(**fake_users_db[username])

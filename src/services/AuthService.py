@@ -35,6 +35,14 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     )
     return  Token(access_token=access_token, token_type="bearer")
 
+async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
+    user = user_service.create_user(form_data.username, get_password_hash(form_data.password))
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return Token(access_token=access_token, token_type="bearer")
+
 
 
 def authenticate_user(username: str, password: str):

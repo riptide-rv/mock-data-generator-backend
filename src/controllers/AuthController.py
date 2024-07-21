@@ -14,3 +14,10 @@ async def login_for_access_token(
 ) -> Token:
     
     return await auth_service.login_for_access_token(form_data)
+
+@router.post("/signup")
+async def signup(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+) -> Token:
+    
+    return await auth_service.signup(form_data)

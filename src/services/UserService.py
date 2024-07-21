@@ -17,8 +17,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 
-def get_user(username: str):
-    return user_repository.get_user(username)
+
     
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
@@ -46,3 +45,13 @@ async def get_current_active_user(
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+
+def get_user(username: str):
+    return user_repository.get_user(username)
+
+def create_user(username: str, password: str) -> User:
+    duplicate_user_exception = HTTPException(status_code=400, detail="Username already registered")
+    if get_user(username):
+        raise duplicate_user_exception
+    return user_repository.create_user(username, password)
