@@ -1,7 +1,7 @@
 from models.User import UserInDB
 from models.model import User
 from repositories.config import db_dependency
-
+from uuid import uuid4
 
 def get_user(username: str, db) -> UserInDB:
     user = db.query(User).filter(User.username == username).first()
