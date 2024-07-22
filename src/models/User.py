@@ -5,7 +5,7 @@ from repositories import config
 from uuid import UUID, uuid4
 
 class UserBase(BaseModel):
-    id: UUID = Field(default_factory=uuid4)
+    id: UUID 
     username: str
     disabled: bool = None
 

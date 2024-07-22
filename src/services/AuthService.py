@@ -3,15 +3,13 @@ from dotenv import load_dotenv
 
 from models.Token import Token
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
 from typing import Annotated
 from datetime import datetime, timedelta, timezone 
 import jwt
 import services.UserService as user_service
 import dependencies
-from repositories.config import db_dependency
-
 
 load_dotenv()
 

@@ -7,7 +7,7 @@ def get_user(username: str, db) -> UserInDB:
     user = db.query(User).filter(User.username == username).first()
     if user:
         print(user)
-        return UserInDB(username=user.username, hashed_password=user.hashed_password, disabled=user.disabled) 
+        return UserInDB(username=user.username, hashed_password=user.hashed_password, disabled=user.disabled, id=user.id) 
     
 
 def create_user(username: str, password: str, db) -> User:

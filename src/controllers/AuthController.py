@@ -4,8 +4,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 from models.Token import Token
 import services.AuthService as auth_service
 from repositories.config import db_dependency
-import repositories.UserRepository as user_repository
-from models.model import User
 
 
 router = APIRouter()
