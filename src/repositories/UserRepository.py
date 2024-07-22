@@ -1,26 +1,19 @@
-from models.User import UserInDB, User
-
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
+from models.User import UserInDB
+from models.model import User
+from repositories.config import db_dependency
 
 
-def get_user(username: str):
-    if username in fake_users_db:
-        user_dict = fake_users_db[username]
-        return UserInDB(**user_dict)
+def get_user(username: str, db) -> UserInDB:
+    user = db.query(User).filter(User.username == username).first()
+    if user:
+        print(user)
+        return UserInDB(username=user.username, hashed_password=user.hashed_password, disabled=user.disabled) 
     
 
-def create_user(username: str, password: str) -> User:
-    fake_users_db[username] = {
-        "username": username,
-        "hashed_password": password,
-        "disabled": False,
-    }
-    return User(**fake_users_db[username])
+def create_user(username: str, password: str, db) -> User:
+    new_user = User(username=username, hashed_password=password)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user

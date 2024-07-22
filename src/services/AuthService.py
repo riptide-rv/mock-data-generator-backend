@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 import jwt
 import services.UserService as user_service
 import dependencies
+from repositories.config import db_dependency
 
 
 load_dotenv()
@@ -21,8 +22,8 @@ ALGORITHM = os.getenv("ALGORITHM")
 
 
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-) -> Token:
-    user = authenticate_user(form_data.username, form_data.password)
+db) -> Token:
+    user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -35,8 +36,8 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     )
     return  Token(access_token=access_token, token_type="bearer")
 
-async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-    user = user_service.create_user(form_data.username, get_password_hash(form_data.password))
+async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db) -> Token:
+    user = user_service.create_user(form_data.username, get_password_hash(form_data.password), db)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
@@ -45,8 +46,8 @@ async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> 
 
 
 
-def authenticate_user(username: str, password: str):
-    user = user_service.get_user(username)
+def authenticate_user(username: str, password: str, db):
+    user = user_service.get_user(username, db)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
