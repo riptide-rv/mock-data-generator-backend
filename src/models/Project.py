@@ -13,3 +13,4 @@ class ProjectBase(BaseModel):
 class ProjectCreate(BaseModel):
     name: str
     description: str
+

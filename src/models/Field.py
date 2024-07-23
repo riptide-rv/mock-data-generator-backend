@@ -1,5 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
+from typing import Optional
 from uuid import UUID
 
 class FieldType(Enum):
@@ -22,5 +23,9 @@ class FieldCreate(BaseModel):
     description: str
     type: FieldType
     range: str = ""
-    project_id: UUID
-
+   
+class FieldUpdate(BaseModel):
+    name: Optional[str]  | None = None
+    description: Optional[str] | None = None
+    type: Optional[FieldType] | None = None
+    range: Optional[str] | None = None
