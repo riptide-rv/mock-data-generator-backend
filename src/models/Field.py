@@ -9,10 +9,18 @@ class FieldType(Enum):
     BOOLEAN = "boolean"
     DATE = "date"
 
-class FieldDetails(BaseModel):
+class FieldBase(BaseModel):
     id: UUID
     name: str
     description: str
     type: FieldType
+    range: str
+    project_id: UUID
+
+class FieldCreate(BaseModel):
+    name: str
+    description: str
+    type: FieldType
+    range: str = ""
     project_id: UUID
 

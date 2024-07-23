@@ -1,4 +1,4 @@
-from models.Field import FieldDetails
+from models.Field import FieldBase
 from pydantic import BaseModel
 from uuid import UUID
 
@@ -8,7 +8,7 @@ class ProjectBase(BaseModel):
     name: str
     description: str
     owner_id: UUID 
-    fields: list[FieldDetails] = []
+    fields: list[FieldBase] = []
 
 class ProjectCreate(BaseModel):
     name: str

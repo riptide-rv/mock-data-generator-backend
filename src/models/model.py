@@ -29,6 +29,7 @@ class FieldDetail(Base):
     name = Column(String(50))
     description = Column(String(200))
     type = Column(Enum(FieldType))
+    range = Column(String(50))
     project_id = Column(Uuid, ForeignKey('projects.id'))
     project = relationship("Project", back_populates="fields")
     
