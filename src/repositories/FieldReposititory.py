@@ -36,3 +36,13 @@ def update_field(project_id: UUID, field_id: UUID, field: FieldUpdate, db: Sessi
     db.merge(update_field)
     db.commit()
     return FieldBase(**update_field.__dict__)
+
+
+def update_fields(project_id: UUID, fields: list[FieldUpdate], db: Session):
+    updated_fields = []
+    for field in fields:
+        updated_field = update_field(project_id, field.id, field, db)
+        if updated_field is None:
+            return None
+        updated_fields.append(updated_field)
+    return updated_fields

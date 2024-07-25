@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from uuid import UUID
-from models.Project import ProjectCreate
+from models.Project import ProjectCreate, ProjectUpdate
 from models.User import UserBase
 from repositories import ProjectRepository as project_repository
 from fastapi import HTTPException, status
@@ -17,3 +17,10 @@ def get_project_by_id(current_user: UserBase, project_id: UUID, db: Session):
     if project is None:
         raise project_not_found_exception
     return project
+
+def update_project(project_id: UUID, project: ProjectUpdate, db: Session):
+    project_not_found_exception = HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail="Project not found")
+    updated_project = project_repository.update_project(project_id, project, db)
+    if updated_project is None:
+        raise project_not_found_exception
+    return updated_project

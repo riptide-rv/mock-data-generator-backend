@@ -23,3 +23,9 @@ def update_field(project_id: UUID, field_id: UUID, field: FieldUpdate, db: Sessi
     if not update_field:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail="Field not found")
     return update_field
+
+def update_fields(project_id: UUID, fields: list[FieldUpdate], db: Session):
+    updated_fields = field_repository.update_fields(project_id, fields, db)
+    if not updated_fields:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail="Field not found")
+    return updated_fields

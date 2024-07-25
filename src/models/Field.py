@@ -25,7 +25,9 @@ class FieldCreate(BaseModel):
     range: str = ""
    
 class FieldUpdate(BaseModel):
+    id: Optional[UUID] | None = None
     name: Optional[str]  | None = None
     description: Optional[str] | None = None
     type: Optional[FieldType] | None = None
     range: Optional[str] | None = None
+    project_id: Optional[UUID] | None = None

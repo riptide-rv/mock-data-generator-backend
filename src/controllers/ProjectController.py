@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from dependencies import oauth2_scheme
-from models.Project import ProjectBase, ProjectCreate
+from models.Project import ProjectBase, ProjectCreate, ProjectUpdate
 from models.User import UserBase
 from repositories.config import db_dependency
 from models.model import Project
@@ -31,6 +31,12 @@ async def read_projects(current_user: Annotated[UserBase, Depends(user_service.g
 async def read_project(project_id: UUID, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency):
     return project_service.get_project_by_id(current_user, project_id, db)
 
+@router.patch("/{project_id}")
+async def update_project(
+    project_id: UUID, project: ProjectUpdate, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
+):
+    return project_service.update_project(project_id, project, db)
+
 @router.post("/{project_id}/fields")
 async def create_field(
     project_id: UUID, field: FieldCreate, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
@@ -46,3 +52,9 @@ async def update_field(
     project_id: UUID, field_id: UUID, field: FieldUpdate, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
 ):
     return field_service.update_field(project_id, field_id, field, db)
+
+@router.put("/{project_id}/fields")
+async def update_fields(
+    project_id: UUID, fields: list[FieldUpdate], current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
+):
+    return field_service.update_fields(project_id, fields, db)
