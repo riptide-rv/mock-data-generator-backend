@@ -46,3 +46,18 @@ def update_fields(project_id: UUID, fields: list[FieldUpdate], db: Session):
             return None
         updated_fields.append(updated_field)
     return updated_fields
+
+def delete_fields(project_id: UUID, fields: list[UUID], db: Session):
+    deleted_fields = []
+    for field_id in fields:
+        delete_field(project_id, field_id, db)
+    return deleted_fields
+
+
+def delete_field(project_id: UUID, field_id: UUID, db: Session):
+    deleted_field = db.query(FieldDetail).filter(FieldDetail.id == field_id and FieldDetail.project_id == project_id).first()
+    if deleted_field is None:
+        return None
+    db.delete(deleted_field)
+    db.commit()
+    return deleted_field

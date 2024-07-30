@@ -58,3 +58,15 @@ async def update_fields(
     project_id: UUID, fields: list[FieldUpdate], current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
 ):
     return field_service.update_fields(project_id, fields, db)
+
+@router.delete("/{project_id}/fields")
+async def delete_fields(
+    project_id: UUID, fields: list[UUID], current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
+):
+    return field_service.delete_fields(project_id, fields, db)
+
+# @router.delete("/{project_id}/fields/{field_id}")
+# async def delete_field(
+#     project_id: UUID, field_id: UUID, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
+# ):
+#     return field_service.delete_field(project_id, field_id, db)

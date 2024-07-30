@@ -29,3 +29,15 @@ def update_fields(project_id: UUID, fields: list[FieldUpdate], db: Session):
     if not updated_fields:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail="Field not found")
     return updated_fields
+
+def delete_fields(project_id: UUID, fields: list[UUID], db: Session):
+    deleted_fields = field_repository.delete_fields(project_id, fields, db)
+
+    return deleted_fields
+
+
+def delete_field(project_id: UUID, field_id: UUID, db: Session):
+    deleted_field = field_repository.delete_field(project_id, field_id, db)
+    if not deleted_field:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail="Field not found")
+    return deleted_field
