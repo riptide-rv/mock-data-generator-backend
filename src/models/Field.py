@@ -18,6 +18,21 @@ class FieldBase(BaseModel):
     range: str
     project_id: UUID
 
+    def jsonString(self):
+        format_string = (
+            """{{{{
+    'name': {name},
+    'description':{description},
+    'type':{type},
+    'range':{range}
+}}}},\n"""
+        )
+        return format_string.format(
+            name=self.name,                                 
+            description = self.description,
+            range = self.range,
+            type = self.type)
+
 class FieldCreate(BaseModel):
     name: str
     description: str

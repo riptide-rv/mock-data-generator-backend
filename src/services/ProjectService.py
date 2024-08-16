@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
 from uuid import UUID
-from models.Project import GenerateType, ProjectCreate, ProjectUpdate
+from models.Project import GenerateType, ProjectBase, ProjectCreate, ProjectUpdate
 from models.User import UserBase
 from repositories import ProjectRepository as project_repository
 from fastapi import HTTPException, status
+
+from services import llm_service
 
 project_not_found_exception = HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail="Project not found")
 
@@ -36,12 +38,8 @@ def generate_mock_data(project_id: UUID, nor: int, format: GenerateType, current
         res = convert_to_json(res)
     return res
     
-def generate_csv(project, nor):
-    res = []
-    row = []
-    for field in project.fields:
-        row.append(field.name)
-    res.append(row)
+def generate_csv(project: ProjectBase, nor: int):
+    res = llm_service.generate_mock_data(project, nor)
     return res
 
 def convert_to_json(res):
