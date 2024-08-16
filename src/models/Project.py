@@ -1,6 +1,11 @@
+from enum import Enum
 from models.Field import FieldBase
 from pydantic import BaseModel
 from uuid import UUID
+
+class GenerateType(Enum):
+    JSON = "json"
+    CSV = "csv"
 
 
 class ProjectBase(BaseModel):

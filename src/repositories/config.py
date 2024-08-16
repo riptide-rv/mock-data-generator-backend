@@ -1,3 +1,4 @@
+from asyncio import log
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
@@ -29,6 +30,7 @@ def get_db():
 
 def get_db():
     db = SessionLocal()
+    log.logger.debug("Opening database connection")
     try:
         yield db
     finally:

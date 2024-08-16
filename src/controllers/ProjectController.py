@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from dependencies import oauth2_scheme
-from models.Project import ProjectBase, ProjectCreate, ProjectUpdate
+from models.Project import GenerateType, ProjectBase, ProjectCreate, ProjectUpdate
 from models.User import UserBase
 from repositories.config import db_dependency
 from models.model import Project
@@ -65,8 +65,7 @@ async def delete_fields(
 ):
     return field_service.delete_fields(project_id, fields, db)
 
-# @router.delete("/{project_id}/fields/{field_id}")
-# async def delete_field(
-#     project_id: UUID, field_id: UUID, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency
-# ):
-#     return field_service.delete_field(project_id, field_id, db)
+
+@router.get("/{project_id}/generate")
+async def generate_mock_data(project_id: UUID, nor: int, format: GenerateType, current_user: Annotated[UserBase, Depends(user_service.get_current_active_user)], db: db_dependency):
+    return project_service.generate_mock_data(project_id, nor, format, current_user, db)

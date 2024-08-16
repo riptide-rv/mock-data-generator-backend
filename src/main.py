@@ -11,6 +11,7 @@ from repositories.config import engine
 origins = {
     "http://localhost",
     "http://localhost:3000",
+    "*"
 }   
 
 app = FastAPI()
